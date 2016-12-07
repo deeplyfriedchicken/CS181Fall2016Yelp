@@ -16,21 +16,33 @@ businesses = sys.argv[1]
 # join by business_id
 # write that RDD to out
 
-df = sqlContext.read.json(businesses)
+businesses = sqlContext.read.json(businesses)
 
 reviews = sys.argv[2] # reviews
 
-df2 = sqlContext.read.json(reviews)
+reviews = sqlContext.read.json(reviews)
 
 # name & categories
 
 # group reviews by name/id
 
-df2 = df2.select("business_id", "text").groupBy("business_id").pivot("business_id")
+# print "NEXT\n"
+# print businesses.take(1)
+#
+# newRDD = reviews.join(businesses)
+# print newRDD.take(3)
+# print newRDD.count()
 
-print df2
 
-everything = df.join(df2, df.business_id == df2.business_id)
+
+reviews = reviews.select("business_id", "text").rdd
+print reviews.take(1)
+reviews = reviews.groupBy(lambda value: value[0]).toDF(['business_id', 'text'])
+reviews.show()
+
+# reviews = reviews.groupBy(lambda x: x = "business_id")
+#
+everything = businesses.join(reviews, businesses.business_id == reviews.business_id)
 
 minimized = everything.select("name", "categories", "text")
 
@@ -38,7 +50,7 @@ minimized.show()
 
 # Write to file
 
-# minimized.rdd.saveAsTextFile("/Users/kevinc/Code/YelpChallenge2016/out")
+minimized.rdd.saveAsTextFile("/Users/kevinc/Code/YelpChallenge2016/out2")
 
 
 # head -n 100 > tosmallerfile1
