@@ -35,10 +35,9 @@ reviews = sqlContext.read.json(reviews)
 
 
 
-reviews = reviews.select("business_id", "text").rdd
+reviews = reviews.select("business_id", "text")
 print reviews.take(1)
-reviews = reviews.groupBy(lambda value: value[0]).toDF(['business_id', 'text'])
-reviews.show()
+# reviews = reviews.groupBy(lambda value: value[0]).toDF(['business_id', 'text'])
 
 # reviews = reviews.groupBy(lambda x: x = "business_id")
 #
@@ -50,7 +49,7 @@ minimized.show()
 
 # Write to file
 
-minimized.rdd.saveAsTextFile("/Users/kevinc/Code/YelpChallenge2016/out2")
+minimized.rdd.saveAsTextFile("/Users/kevinc/Code/YelpChallenge2016/out")
 
 
 # head -n 100 > tosmallerfile1
