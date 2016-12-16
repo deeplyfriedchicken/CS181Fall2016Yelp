@@ -46,4 +46,29 @@ model = LogisticRegressionWithLBFGS.train(training, numClasses=len(labelSet))
 
 # test a few items
 labelsAndPreds = test.map(lambda p: (labelSet[int(p.label)], p.label,model.predict(p.features) ))
-print labelsAndPreds.take(20)
+print labelsAndPreds.take(100)
+
+for index in range(len(temp)):
+	realVal = int(temp[0][1]) # typecasting real value from float to int so we can compare to predictedVal
+	predictedVal = int(temp[0][2])
+
+	# if (realVal == predictedVal):
+	# 	#output = ([x[1] for x in labelsAndPreds],true)
+	# 	print "true"
+	# else:
+	# 	#output = ([x[1] for x in labelsAndPreds],false)
+	# 	print "false"
+
+	accurate = 0
+	inaccurate = 0
+	if (realVal == predictedVal):
+		accurate + 1
+	else:
+		inaccurate + 1
+
+if (inaccurate == 0):
+	final = 100
+else:
+	final = (accurate / (accurate + inaccurate)) * 100
+
+print "Percent accurate:",final,"%"
