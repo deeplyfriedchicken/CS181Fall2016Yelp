@@ -11,10 +11,10 @@ import sys
 def parseLine(line):
 	parts = line.split(";")
 	name = parts[0].encode('ascii','ignore')
-	categories = [x.strip() for x in parts[1].split(",") ]
+	categories = [x.strip() for x in parts[1].replace("'", "").replace("[", "").replace("]","").split(",") ]
 	reviews = parts[2].encode('ascii','ignore')
-	#  (name , category , reviews-text)
-	return (name, categories[0], reviews) # name(string), categories (list), review (string)
+	for category in categories: # loops through all the categories of a given item
+		return (name, category, reviews) # name(string), categories (list), review (string)
 
 
 conf = SparkConf().setAppName("YELP").set("spark.executor.memory", "4g")
