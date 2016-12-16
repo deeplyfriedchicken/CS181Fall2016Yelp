@@ -14,14 +14,14 @@ def parseLine(line):
 	categories = [x.strip() for x in parts[1].split(",") ]
 	reviews = parts[2].encode('ascii','ignore')
 	#  (name , category , reviews-text)
-	return (name, categories[0], reviews)
+	return (name, categories[0], reviews) # name(string), categories (list), review (string)
 
 
 conf = SparkConf().setAppName("YELP").set("spark.executor.memory", "4g")
 sc = SparkContext(conf=conf)
 
 # Load documents (one per line).
-documents = sc.textFile(sys.argv[1]).map(parseLine)
+documents = sc.textFile(sys.argv[1]).map(parseLine)  #rdd
 
 label = documents.map(lambda x: x[1])
 features = documents.map(lambda x: x[2])
